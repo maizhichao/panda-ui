@@ -3,19 +3,16 @@
  * This is a middleware which serves as a proxy to webserver
  */
 const proxy = require("http-proxy-middleware");
-const DEV_WEBSERVER = "http://localhost:8888"; // TODO: the path will change
+const DEV_WEBSERVER = "http://localhost:8888";
 
 module.exports = function(app) {
   app.use(
-    proxy("/zh-cn", {
+    proxy("/__WEBSERVER__", {
       target: DEV_WEBSERVER,
-      changeOrigin: true
-    })
-  );
-  app.use(
-    proxy("/en-us", {
-      target: DEV_WEBSERVER,
-      changeOrigin: true
+      changeOrigin: true,
+      pathRewrite: {
+        "^/__WEBSERVER__": "/"
+      }
     })
   );
 };

@@ -2,14 +2,12 @@ import axios from "axios";
 import { Modal } from "antd";
 
 function throwUnknownError() {
-  if (process.env.NODE_ENV !== "production") {
-    Modal.error({
-      title: "错误",
-      content: "未知错误",
-      centered: true,
-      okText: "确认"
-    });
-  }
+  Modal.error({
+    title: "错误",
+    content: "未知错误",
+    centered: true,
+    okText: "确认"
+  });
 }
 const service = axios.create({
   timeout: 100000,
@@ -26,7 +24,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    config.url = "webapi" + config.url;
+    config.url = window.__WEBSERVER__ + config.url;
     return config;
   },
   (error) => {
