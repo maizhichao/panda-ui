@@ -23,7 +23,7 @@ before_script:
 
 script:
   - yarn run build
-  - echo -n "${PACKAGE_VERSION}" > version.txt
+  - echo -n "${PACKAGE_VERSION}" > ./build/version.txt
   - echo ${PACKAGE_VERSION}
   - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
   - ls -la
