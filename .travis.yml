@@ -20,16 +20,12 @@ env:
 before_script:
   - export STATIC_CDN_PATH=${STATIC_CDN}/${OSS_ENV}/${PACKAGE_VERSION}
   - export ARTIFACT_NAME="${PROJECT}-${ROLE}-${TRAVIS_BRANCH}-${PACKAGE_VERSION}.zip"
-  - export TAG=`echo "$PROJECT-$ROLE:$TRAVIS_BRANCH-$PACKAGE_VERSION" | tr '[:upper:]' '[:lower:]'`
-  - export TAG_LATEST=`echo "$PROJECT-$ROLE:$TRAVIS_BRANCH-latest" | tr '[:upper:]' '[:lower:]'`
-  - export REMOTE_TAG=$DOCKER_REGISTRY/$DOCKER_NS/$TAG
-  - export REMOTE_TAG_LATEST=$DOCKER_REGISTRY/$DOCKER_NS/$TAG_LATEST
 
 script:
   - yarn run build
   - echo -n "${PACKAGE_VERSION}" > version.txt
   - echo ${PACKAGE_VERSION}
-  - zip -r ./${ARTIFACT_NAME} ./ -x /node_modules/** -x /.git/** -x /.vscode/**
+  - cd build && zip -r ../${ARTIFACT_NAME} ./ && cd ..
   - ls -la
 
 before_deploy:
