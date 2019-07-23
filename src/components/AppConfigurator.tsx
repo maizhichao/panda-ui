@@ -22,7 +22,7 @@ declare global {
  * In production mode, the value is reset to empty string
  */
 window.__WEBSERVER__ =
-  process.env.NODE_ENV === "production" ? "" : "__WEBSERVER__";
+  process.env.NODE_ENV === "production" ? "" : "https://tiger.energymost.com";
 
 const AppConfigurator: React.FC = (props) => {
   return (

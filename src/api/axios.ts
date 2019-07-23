@@ -40,6 +40,10 @@ service.interceptors.response.use(
     return res.data;
   },
   (err) => {
+    if (!err.response) {
+      throwUnknownError();
+      return;
+    }
     switch (err.response.status) {
       case 401: {
         Modal.warning({
