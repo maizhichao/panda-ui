@@ -24,7 +24,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    config.url = window.__WEBSERVER__ + config.url;
+    config.url = window.WEBSERVER + config.url;
     return config;
   },
   (error) => {
