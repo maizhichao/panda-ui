@@ -72,14 +72,24 @@ export class UserManagement extends React.Component<
   };
 
   private onTest = () => {
-    service.get("/api").then((res) =>
-      Modal.success({
-        title: "Webserver returns",
-        content: JSON.stringify(res),
-        centered: true,
-        okText: "确认"
-      })
-    );
+    service
+      .get("/api")
+      .then((res) =>
+        Modal.success({
+          title: "Webserver returns",
+          content: JSON.stringify(res),
+          centered: true,
+          okText: "确认"
+        })
+      )
+      .catch((err) => {
+        Modal.error({
+          title: "Webserver responds with error",
+          content: JSON.stringify(err),
+          centered: true,
+          okText: "确认"
+        });
+      });
   };
 
   public render() {
