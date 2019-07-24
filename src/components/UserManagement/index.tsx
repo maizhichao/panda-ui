@@ -8,7 +8,7 @@ import { AppState } from "store/configure-store";
 import { bindActionCreators } from "redux";
 import { AppActions } from "store/actions/app-actions";
 import { ThunkDispatch } from "redux-thunk";
-import { Tag, Button, Row } from "antd";
+import { Tag, Button, Row, Modal } from "antd";
 import { RouteComponentProps } from "react-router-dom";
 import service from "api/axios";
 import "./style.less";
@@ -72,7 +72,14 @@ export class UserManagement extends React.Component<
   };
 
   private onTest = () => {
-    service.get("/api").then((res) => console.log(res));
+    service.get("/api").then((res) =>
+      Modal.success({
+        title: "Webserver returns",
+        content: JSON.stringify(res),
+        centered: true,
+        okText: "确认"
+      })
+    );
   };
 
   public render() {
