@@ -4,6 +4,35 @@ import { SOURCE_MAP } from "./source-map";
 
 const DEVELOPMENT = process.env.NODE_ENV !== "production";
 
+export enum HTTP_METHOD {
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
+  PATCH = "PATCH"
+}
+
+export interface IFunctionOptions {
+  source: SOURCE_MAP;
+  url: string;
+  method?: HTTP_METHOD;
+  data?: any;
+  params?: URLSearchParams | object;
+}
+
+function validateRequest(options: IFunctionOptions) {
+  if (
+    options.data &&
+    [HTTP_METHOD.POST, HTTP_METHOD.PUT, HTTP_METHOD.PATCH].indexOf(
+      options.method
+    ) === -1
+  ) {
+    throw Error(
+      "Function call attached with data is only appplicable for request methods 'PUT', 'POST' and 'PATCH'"
+    );
+  }
+}
+
 function throwUnknownError() {
   Modal.error({
     title: "错误",
@@ -56,35 +85,6 @@ service.interceptors.response.use(
     }
   }
 );
-
-export enum HttpMethod {
-  GET = "GET",
-  POST = "POST",
-  PUT = "PUT",
-  DELETE = "DELETE",
-  PATCH = "PATCH"
-}
-
-export interface IFunctionOptions {
-  source: SOURCE_MAP;
-  url: string;
-  method?: HttpMethod;
-  data?: any;
-  params?: URLSearchParams | object;
-}
-
-function validateRequest(options: IFunctionOptions) {
-  if (
-    options.data &&
-    [HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH].indexOf(
-      options.method
-    ) === -1
-  ) {
-    throw Error(
-      "Function call attached with data is only appplicable for request methods 'PUT', 'POST' and 'PATCH'"
-    );
-  }
-}
 
 export function invoke(options: IFunctionOptions) {
   if (DEVELOPMENT) {

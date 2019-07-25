@@ -1,5 +1,6 @@
 export enum SOURCE_MAP {
   AMMO = "AMMO",
+  ANION = "ANION",
   BAND = "BAND",
   CLASSIC = "CLASSIC",
   DRUM_GQL = "DRUM_GQL",

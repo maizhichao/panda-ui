@@ -72,27 +72,26 @@ export class UserManagement extends React.Component<
       window.WEBSERVER + `/zh-cn/logout?returnURL=${callbackURL}`;
   };
 
-  private onTest = () => {
-    invoke({
-      source: SOURCE_MAP.CLASSIC,
-      url: "/api/user/GetUserById/100107"
-    })
-      .then((res) =>
-        Modal.success({
-          title: "Webserver returns",
-          content: JSON.stringify(res),
-          centered: true,
-          okText: "确认"
-        })
-      )
-      .catch((err) => {
-        Modal.error({
-          title: "Webserver responds with error",
-          content: JSON.stringify(err),
-          centered: true,
-          okText: "确认"
-        });
+  private onTest = async () => {
+    try {
+      const res = await invoke({
+        source: SOURCE_MAP.ANION,
+        url: "/Hierarchy/358919/100107"
       });
+      Modal.success({
+        title: "Webserver returns",
+        content: JSON.stringify(res),
+        centered: true,
+        okText: "确认"
+      });
+    } catch (err) {
+      Modal.error({
+        title: "Webserver responds with error",
+        content: JSON.stringify(err),
+        centered: true,
+        okText: "确认"
+      });
+    }
   };
 
   public render() {
