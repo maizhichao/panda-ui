@@ -45,7 +45,7 @@ function throwUnknownError() {
 const axiosOptions: AxiosRequestConfig = {
   timeout: 2500,
   method: "POST",
-  baseURL: "https://tiger.energymost.com",
+  baseURL: process.env.REACT_APP_WEBSERVER_HOST,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
