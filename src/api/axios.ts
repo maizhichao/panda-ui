@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { Modal } from "antd";
 import { SOURCE_MAP } from "./source-map";
 
@@ -42,10 +42,10 @@ function throwUnknownError() {
   });
 }
 
-const service = axios.create({
+const axiosOptions: AxiosRequestConfig = {
   timeout: 2500,
   method: "POST",
-  baseURL: window.WEBSERVER,
+  baseURL: "https://tiger.energymost.com",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -54,7 +54,14 @@ const service = axios.create({
   },
   withCredentials: true,
   data: {}
-});
+};
+
+if (DEVELOPMENT) {
+  // This is to solve the re-flight cors checking issue.
+  axiosOptions.withCredentials = false;
+}
+
+const service = axios.create(axiosOptions);
 
 service.interceptors.response.use(
   (res) => {

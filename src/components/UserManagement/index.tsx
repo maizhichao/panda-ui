@@ -76,7 +76,7 @@ export class UserManagement extends React.Component<
     try {
       const res = await invoke({
         source: SOURCE_MAP.ANION,
-        url: "/Hierarchy/358919/100107"
+        url: "/Hierarchy/358919/100107/BuildingList"
       });
       Modal.success({
         title: "Webserver returns",
