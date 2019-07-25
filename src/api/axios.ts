@@ -1,5 +1,8 @@
 import axios from "axios";
 import { Modal } from "antd";
+import { SOURCE_MAP } from "./source-map";
+
+const DEVELOPMENT = process.env.NODE_ENV !== "production";
 
 function throwUnknownError() {
   Modal.error({
@@ -9,8 +12,11 @@ function throwUnknownError() {
     okText: "确认"
   });
 }
+
 const service = axios.create({
-  timeout: 100000,
+  timeout: 2500,
+  method: "POST",
+  baseURL: window.WEBSERVER,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -18,19 +24,8 @@ const service = axios.create({
     cache: "no-cache"
   },
   withCredentials: true,
-  method: "GET",
   data: {}
 });
-
-service.interceptors.request.use(
-  (config) => {
-    config.url = window.WEBSERVER + config.url;
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
 
 service.interceptors.response.use(
   (res) => {
@@ -62,4 +57,47 @@ service.interceptors.response.use(
   }
 );
 
-export default service;
+export enum HttpMethod {
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
+  PATCH = "PATCH"
+}
+
+export interface IFunctionOptions {
+  source: SOURCE_MAP;
+  url: string;
+  method?: HttpMethod;
+  data?: any;
+  params?: URLSearchParams | object;
+}
+
+function validateRequest(options: IFunctionOptions) {
+  if (
+    options.data &&
+    [HttpMethod.POST, HttpMethod.PUT, HttpMethod.PATCH].indexOf(
+      options.method
+    ) === -1
+  ) {
+    throw Error(
+      "Function call attached with data is only appplicable for request methods 'PUT', 'POST' and 'PATCH'"
+    );
+  }
+}
+
+export function invoke(options: IFunctionOptions) {
+  if (DEVELOPMENT) {
+    validateRequest(options);
+  }
+
+  return service.post("/api", options);
+}
+
+export interface ISubscribeOptions {
+  // TODO: define subscribe options, similar with IFunctionOptions
+}
+
+export function subscribe(options: ISubscribeOptions) {
+  // TODO: define subscribe
+}

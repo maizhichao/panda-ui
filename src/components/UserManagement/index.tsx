@@ -10,8 +10,9 @@ import { AppActions } from "store/actions/app-actions";
 import { ThunkDispatch } from "redux-thunk";
 import { Tag, Button, Row, Modal } from "antd";
 import { RouteComponentProps } from "react-router-dom";
-import service from "api/axios";
+import { invoke } from "api/axios";
 import "./style.less";
+import { SOURCE_MAP } from "api/source-map";
 
 export interface IUserManagementProps extends RouteComponentProps {
   users: IUser[];
@@ -72,8 +73,10 @@ export class UserManagement extends React.Component<
   };
 
   private onTest = () => {
-    service
-      .get("/api")
+    invoke({
+      source: SOURCE_MAP.CLASSIC,
+      url: "/api/user/GetUserById/100107"
+    })
       .then((res) =>
         Modal.success({
           title: "Webserver returns",
