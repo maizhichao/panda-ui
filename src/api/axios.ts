@@ -45,7 +45,7 @@ function throwUnknownError() {
 const axiosOptions: AxiosRequestConfig = {
   timeout: 2500,
   method: "POST",
-  baseURL: process.env.REACT_APP_WEBSERVER_HOST,
+  baseURL: window.WEBSERVER,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -55,11 +55,6 @@ const axiosOptions: AxiosRequestConfig = {
   withCredentials: true,
   data: {}
 };
-
-if (DEVELOPMENT) {
-  // This is to solve the re-flight cors checking issue.
-  axiosOptions.withCredentials = false;
-}
 
 const service = axios.create(axiosOptions);
 

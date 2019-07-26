@@ -60,16 +60,14 @@ export class UserManagement extends React.Component<
 
   private onLogin = () => {
     this.props.showSpin(true);
-    const callbackURL = window.location.href;
-    window.location.href =
-      window.WEBSERVER + `/zh-cn/login?callbackURL=${callbackURL}&sysId=1`;
+    window.location.href = window.WEBSERVER + `/zh-cn/login?sysId=1`;
   };
 
   private onLogout = () => {
     this.props.showSpin(true);
-    const callbackURL = window.location.href;
+    const backToLoginPage = window.location.href;
     window.location.href =
-      window.WEBSERVER + `/zh-cn/logout?returnURL=${callbackURL}`;
+      window.WEBSERVER + `/zh-cn/logout?returnURL=${backToLoginPage}`;
   };
 
   private onTest = async () => {
