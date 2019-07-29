@@ -65,6 +65,10 @@ export class RoleManagement extends React.Component<
     this.setState({ dataSource });
   };
 
+  private onSourceChange = (value: SelectValue) => {
+    this.setState({ source: value as SOURCE_MAP });
+  };
+
   public render() {
     const methods = ["GET", "POST", "PUT", "DELETE", "PATCH"].map((m) => (
       <Select.Option key={m}>{m}</Select.Option>
@@ -78,6 +82,7 @@ export class RoleManagement extends React.Component<
                 dataSource={this.state.dataSource}
                 value={this.state.source}
                 style={{ width: 500 }}
+                onChange={this.onSourceChange}
                 onSelect={this.onSelect}
                 onSearch={this.handleSearch}
                 placeholder="SOURCE"
