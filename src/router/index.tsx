@@ -18,6 +18,11 @@ const UserManagement = Loadable({
   loading: Loading
 });
 
+const RoleManagement = Loadable({
+  loader: () => import("components/RoleManagement"),
+  loading: Loading
+});
+
 class Router extends React.Component {
   shouldComponentUpdate() {
     return false;
@@ -27,7 +32,7 @@ class Router extends React.Component {
     return (
       <Switch>
         <Route path="/user" component={UserManagement} />
-        <Route path="/role" component={EmptySkeleton} />
+        <Route path="/role" component={RoleManagement} />
         <Route path="/log" component={EmptySkeleton} />
         <Route path="/other/pop" component={EmptySkeleton} />
         <Route path="/other/jazz" component={EmptySkeleton} />

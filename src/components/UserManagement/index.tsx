@@ -58,18 +58,6 @@ export class UserManagement extends React.Component<
     ));
   }
 
-  private onLogin = () => {
-    this.props.showSpin(true);
-    window.location.href = window.WEBSERVER + `/zh-cn/login?sysId=1`;
-  };
-
-  private onLogout = () => {
-    this.props.showSpin(true);
-    const backToLoginPage = window.location.href;
-    window.location.href =
-      window.WEBSERVER + `/zh-cn/logout?returnURL=${backToLoginPage}`;
-  };
-
   private onTest = async () => {
     try {
       const res = await invoke({
@@ -83,22 +71,13 @@ export class UserManagement extends React.Component<
         okText: "确认"
       });
     } catch (err) {
-      Modal.error({
-        title: "Webserver responds with error",
-        content: JSON.stringify(err),
-        centered: true,
-        okText: "确认"
-      });
+      // pass
     }
   };
 
   public render() {
     return (
       <div className="user-management">
-        <Button type="primary" onClick={this.onLogin}>
-          Login
-        </Button>
-        <Button onClick={this.onLogout}>Logout</Button>
         <Button onClick={this.onTest}>Test</Button>
         <div style={{ paddingTop: 20 }}>{this.renderUserList()}</div>
       </div>

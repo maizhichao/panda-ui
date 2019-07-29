@@ -1,7 +1,8 @@
 import React from "react";
-import { Layout, Avatar } from "antd";
+import { Layout } from "antd";
 import "./style.less";
 import NavMenu from "./NavMenu";
+import MenuOptions from "./MenuOptions";
 
 const { Header } = Layout;
 
@@ -24,7 +25,7 @@ class AppHeader extends React.Component<IAppHeaderProps, IAppHeaderState> {
       <Header className="se-app-header">
         <div className="menu-logo" />
         <NavMenu />
-        <Avatar className="menu-option" icon="user" />
+        <MenuOptions />
       </Header>
     );
   }

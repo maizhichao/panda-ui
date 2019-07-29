@@ -33,13 +33,14 @@ function validateRequest(options: IFunctionOptions) {
   }
 }
 
-function throwUnknownError() {
+function throwUnknownError(err: any) {
   Modal.error({
     title: "错误",
-    content: "未知错误",
+    content: "未知错误: " + JSON.stringify(err),
     centered: true,
     okText: "确认"
   });
+  throw new Error("未知错误");
 }
 
 const axiosOptions: AxiosRequestConfig = {
@@ -67,8 +68,7 @@ service.interceptors.response.use(
   },
   (err) => {
     if (!err.response) {
-      throwUnknownError();
-      return;
+      throwUnknownError(err);
     }
     switch (err.response.status) {
       case 401: {
@@ -79,10 +79,10 @@ service.interceptors.response.use(
           autoFocusButton: "ok",
           onOk: () => undefined
         });
-        break;
+        throw new Error("登录超时");
       }
       default: {
-        throwUnknownError();
+        throwUnknownError(err);
       }
     }
   }
