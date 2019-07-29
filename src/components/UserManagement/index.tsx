@@ -73,8 +73,8 @@ export class UserManagement extends React.Component<
   private onTest = async () => {
     try {
       const res = await invoke({
-        source: SOURCE_MAP.ANION,
-        url: "/Hierarchy/358919/100107/BuildingList"
+        source: SOURCE_MAP.CLASSIC,
+        url: "/api/user/GetUserById/100107"
       });
       Modal.success({
         title: "Webserver returns",

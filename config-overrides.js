@@ -4,8 +4,7 @@ const {
   fixBabelImports,
   addLessLoader
 } = require("customize-cra");
-const request = require("request-promise");
-const bodyParser = require("body-parser");
+const proxy = require("http-proxy-middleware");
 
 const webpackConfig = override(
   fixBabelImports("import", {
@@ -50,35 +49,17 @@ const devServerConfig = (config) => {
        * Config the fake sso/acs API to
        * allow the localhost to successfully set the cookies
        */
-      app.use(bodyParser());
-      app.post("/:lang/sso/acs", (req, res) => {
-        const { callbackURL } = req.query;
-        request({
-          method: "POST",
-          uri: process.env.REACT_APP_WEBSERVER_HOST + "/dev-server-login",
-          body: req.body,
-          json: true,
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "cache-control": "no-cache",
-            cache: "no-cache"
-          },
-          resolveWithFullResponse: true
+      app.use(
+        "/__WEBSERVER__",
+        proxy({
+          target: process.env.REACT_APP_WEBSERVER_HOST,
+          changeOrigin: true,
+          pathRewrite: {
+            "^/__WEBSERVER__": ""
+          }
         })
-          .then((ret) => {
-            Object.keys(ret.headers).forEach((key) => {
-              res.append(key, ret.headers[key]);
-            });
-            res.redirect(callbackURL);
-          })
-          .catch((err) => {
-            console.log("TCL: devServerConfig -> err");
-          });
-      });
-    },
-    allowedHosts: ["tiger.energymost.com", "localhost:8888"]
+      );
+    }
   };
 };
 
