@@ -6,9 +6,9 @@ import { AppActions } from "store/actions/app-actions";
 import { ThunkDispatch } from "redux-thunk";
 import { Form, Button, Row, Modal, AutoComplete, Input, Select } from "antd";
 import { invoke, HTTP_METHOD } from "api/axios";
-import "./style.less";
 import { SOURCE_MAP } from "api/source-map";
 import { SelectValue } from "antd/lib/select";
+import "./style.less";
 
 const DATA_SOURCE = Object.keys(SOURCE_MAP);
 
@@ -44,7 +44,15 @@ export class RoleManagement extends React.Component<
       });
       Modal.success({
         title: "Webserver returns",
-        content: JSON.stringify(res),
+        content: (
+          <pre
+            style={{
+              maxHeight: 450
+            }}
+          >
+            <code className="prettyprint">{JSON.stringify(res, null, 2)}</code>
+          </pre>
+        ),
         centered: true,
         okText: "确认"
       });
@@ -109,6 +117,7 @@ export class RoleManagement extends React.Component<
               </Select>
             </Form.Item>
             <Button
+              type="primary"
               disabled={!this.state.source || !this.state.url}
               onClick={this.onTest}
             >
