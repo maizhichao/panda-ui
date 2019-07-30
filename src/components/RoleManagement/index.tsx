@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { AppActions } from "store/actions/app-actions";
 import { ThunkDispatch } from "redux-thunk";
 import { Form, Button, Row, Modal, AutoComplete, Input, Select } from "antd";
-import { invoke, HTTP_METHOD } from "api/axios";
+import { invoke, HTTP_METHOD, IFunctionOptions } from "api/axios";
 import { SOURCE_MAP } from "api/source-map";
 import { SelectValue } from "antd/lib/select";
 import "./style.less";
@@ -20,6 +20,7 @@ export interface IRoleManagemenetState {
   source: SOURCE_MAP;
   url: string;
   method: HTTP_METHOD;
+  body: string;
   dataSource: string[];
 }
 
@@ -31,17 +32,22 @@ export class RoleManagement extends React.Component<
     source: SOURCE_MAP.CLASSIC,
     url: "/api/user/GetUserById/100107",
     method: HTTP_METHOD.GET,
+    body: null,
     dataSource: DATA_SOURCE
   };
 
-  private onTest = async () => {
-    const { source, url, method } = this.state;
+  private onFetch = async () => {
+    const { source, url, method, body } = this.state;
     try {
-      const res = await invoke({
+      const funcOptions: IFunctionOptions = {
         source: source,
         url: url,
         method: method
-      });
+      };
+      if (method === HTTP_METHOD.POST) {
+        funcOptions.data = this.state.body;
+      }
+      const res = await invoke(funcOptions);
       Modal.success({
         title: "Webserver returns",
         content: (
@@ -116,10 +122,19 @@ export class RoleManagement extends React.Component<
                 {methods}
               </Select>
             </Form.Item>
+            {this.state.method === HTTP_METHOD.POST && (
+              <Form.Item label="BODY">
+                <Input.TextArea
+                  placeholder="Please enter request body"
+                  value={this.state.body}
+                  onChange={(e) => this.setState({ body: e.target.value })}
+                />
+              </Form.Item>
+            )}
             <Button
               type="primary"
               disabled={!this.state.source || !this.state.url}
-              onClick={this.onTest}
+              onClick={this.onFetch}
             >
               FETCH
             </Button>
