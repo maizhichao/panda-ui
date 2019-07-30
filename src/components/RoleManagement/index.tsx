@@ -45,7 +45,7 @@ export class RoleManagement extends React.Component<
         method: method
       };
       if (method === HTTP_METHOD.POST) {
-        funcOptions.data = this.state.body;
+        funcOptions.data = body;
       }
       const res = await invoke(funcOptions);
       Modal.success({
