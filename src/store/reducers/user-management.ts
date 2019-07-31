@@ -3,7 +3,7 @@ import { AppActions } from "store/actions/app-actions";
 import _ from "lodash";
 
 const generateUsers = (): IUser[] => {
-  const total = _.random(10, 50);
+  const total = _.random(5, 10);
   return _.times(total, (index) => ({
     id: String(index),
     name: `User ${index}`
