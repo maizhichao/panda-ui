@@ -11,8 +11,8 @@ import { ThunkDispatch } from "redux-thunk";
 import { Tag, Button, Row, Modal } from "antd";
 import { RouteComponentProps } from "react-router-dom";
 import { invoke } from "api/axios";
-import "./style.less";
 import { SOURCE_MAP } from "api/source-map";
+import "./style.less";
 
 export interface IUserManagementProps extends RouteComponentProps {
   users: IUser[];

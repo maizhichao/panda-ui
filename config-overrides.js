@@ -50,20 +50,11 @@ const devServerConfig = (config) => {
        * allow the localhost to successfully set the cookies
        */
       app.use(
-        proxy("/__API__", {
-          target: process.env.REACT_APP_WEBSERVER_API,
+        proxy("/__webserver__", {
+          target: process.env.REACT_APP_WEBSERVER_HOST,
           changeOrigin: true,
           pathRewrite: {
-            "^/__API__": ""
-          }
-        })
-      );
-      app.use(
-        proxy("/__WS__", {
-          target: process.env.REACT_APP_WEBSERVER_WS,
-          changeOrigin: true,
-          pathRewrite: {
-            "^/__WS__": ""
+            "^/__webserver__": ""
           },
           ws: true
         })

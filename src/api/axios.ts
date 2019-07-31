@@ -44,7 +44,7 @@ function throwUnknownError(err: any) {
 }
 
 const axiosOptions: AxiosRequestConfig = {
-  timeout: 2500,
+  timeout: 30000,
   method: "POST",
   baseURL: window.WEBSERVER,
   headers: {
