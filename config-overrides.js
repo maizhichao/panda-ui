@@ -46,19 +46,26 @@ const devServerConfig = (config) => {
     ...config,
     before: function(app, server) {
       /**
-       * Config the fake sso/acs API to
-       * allow the localhost to successfully set the cookies
+       * Set up the webpack-dev-server proxy
+       * to bypass the cross origin issue.
        */
       app.use(
-        proxy("/__webserver__", {
+        proxy("/__WEBSERVER__", {
           target: process.env.REACT_APP_WEBSERVER_HOST,
           changeOrigin: true,
           pathRewrite: {
-            "^/__webserver__": ""
+            "^/__WEBSERVER__": ""
           },
           ws: true
         })
       );
+      const wsProxy = proxy("/socket.io", {
+        target: process.env.REACT_APP_WEBSERVER_HOST,
+        changeOrigin: true,
+        ws: true
+      });
+      app.use(wsProxy);
+      app.on("upgrade", wsProxy.upgrade);
     }
   };
 };
