@@ -12,6 +12,7 @@ import { Tag, Button, Row, Modal } from "antd";
 import { RouteComponentProps } from "react-router-dom";
 import { invoke } from "api/axios";
 import { SOURCE_MAP } from "api/source-map";
+import io from "socket.io-client";
 import "./style.less";
 
 export interface IUserManagementProps extends RouteComponentProps {
@@ -34,6 +35,22 @@ export class UserManagement extends React.Component<
     prevState: IUserManagemenetState
   ) {
     return {};
+  }
+
+  public componentDidMount() {
+    const event = "alarmcount";
+    const url =
+      "/web?event=alarmcount&sysType=1&userId=100107&customerId=358919";
+    const socket = io.connect(url);
+    socket.on("connect", () => {
+      console.debug("connect success");
+    });
+    socket.on("reconnect_failed", () => {
+      console.debug("connect failed, and reconnect");
+    });
+    socket.on(event, (result: any) => {
+      console.debug(`RCV ${event} -> ${JSON.stringify(result)}`);
+    });
   }
 
   private onEdit = (user: IUser) => {
